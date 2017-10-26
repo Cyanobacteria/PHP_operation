@@ -1,33 +1,34 @@
 <?php
-CreateUser($_POST['username'],$_POST['password']);
-
-
-
-
-//CreateUser(名稱,密碼);
-function CreateUser($username,$password){
-    //確定資料有送出成功
-    if(isset($_POST['submit'])){
-    //$username = $_POST['username'];
-    //$password = $_POST['password'];
-    //連結資料庫
-    $connection = mysqli_connect('localhost','root','66','loginapp');
+CreateUser($_POST['username'],$_POST['password'],$_POST['submit']);
+//
+function ConnectToDB($target,$account,$password,$table){
+   // $connection = mysqli_connect('localhost','root','66','loginapp');
+    $connection = mysqli_connect($target,$account,$password,$table);
         //確認資料庫連結成功或失敗
-        if($connection){
-            echo "connected!!";
-        } else{
-            die("filed");
-        }
-        //SQL語句
-        $query = "INSERT INTO users(username,password) ";
-        $query .= "VALUES ('$username', '$password') ";
+    if($connection){
+        echo "connected!!";
+        return $connection;
+    } else{
+        die("filed");
+    }
+}
+function DBResult($connection,$query){
         //存入DB(這一句就會存入了)
         $result = mysqli_query($connection, $query);
         //確認存入為真
-        $result;
         if(!$result){
             die('Query FAILED!!' . mysqli_error());
         }
+}
+//CreateUser(名稱,密碼);
+function CreateUser($username,$password,$submit){
+    //確定資料有送出成功
+    if(isset($submit)){
+        $connection = ConnectToDB('localhost','root','66','loginapp');
+        //SQL語句
+        $query = "INSERT INTO users(username,password) ";
+        $query .= "VALUES ('$username', '$password') ";
+        DBResult($connection,$query);
     }
 }
 
@@ -54,7 +55,7 @@ function CreateUser($username,$password){
 <div class="container">
 
     <div class="col-sm-6">
-        <form action="login_create.php" method="post">
+        <form action="login.php" method="post">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" name="username" class="form-control">
