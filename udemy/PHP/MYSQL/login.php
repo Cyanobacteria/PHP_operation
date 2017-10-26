@@ -24,7 +24,7 @@ function DBResult($connection,$query){
 function CreateUser($username,$password,$submit){
     //確定資料有送出成功
     if(isset($submit)){
-        $connection = ConnectToDB('localhost','root','66','loginapp');
+        $connection = ConnectToDB('localhost','root','','loginapp');
         //SQL語句
         $query = "INSERT INTO users(username,password) ";
         $query .= "VALUES ('$username', '$password') ";
