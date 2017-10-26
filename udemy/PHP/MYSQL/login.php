@@ -1,9 +1,13 @@
 <?php
 CreateUser($_POST['username'],$_POST['password'],$_POST['submit']);
-//
-function ConnectToDB($target,$account,$password,$table){
-   // $connection = mysqli_connect('localhost','root','66','loginapp');
-    $connection = mysqli_connect($target,$account,$password,$table);
+/*
+ConnectToDB($target,$account,$password,$db); 連接資料庫（就是確定是哪個資料庫而已還沒有確定table）
+DBResult($connection,$query); 給定連接好的資料庫，並給定SQL語法來進行操作
+
+*/
+function ConnectToDB($target,$account,$password,$db){
+   // $connection = mysqli_connect('localhost','root','','loginapp');
+    $connection = mysqli_connect($target,$account,$password,$db);
         //確認資料庫連結成功或失敗
     if($connection){
         echo "connected!!";
@@ -16,11 +20,16 @@ function DBResult($connection,$query){
         //存入DB(這一句就會存入了)
         $result = mysqli_query($connection, $query);
         //確認存入為真
+        
         if(!$result){
             die('Query FAILED!!' . mysqli_error());
+        }else{
+            return $result;
         }
 }
 //CreateUser(名稱,密碼);
+
+//CreateUser重新寫成CreateData?（寫成比較通用的形式）
 function CreateUser($username,$password,$submit){
     //確定資料有送出成功
     if(isset($submit)){
@@ -32,8 +41,19 @@ function CreateUser($username,$password,$submit){
     }
 }
 
+function ShowDataByTable($db,$table){
+    $connection = ConnectToDB('localhost','root','',$db);
+    $query = "SELECT * FROM $table";
+    $result = DBResult($connection,$query);
+    return $result;
+}   
+function UpdateDataByValue(){
+}
 
-
+function DeleteDataByValue(){
+}
+//怎寫？名子有初步想法
+//怎樣會return? 怎樣return 會有害？ 最常用的函式是哪些？
 
 ?>
 
@@ -54,6 +74,13 @@ function CreateUser($username,$password,$submit){
 
 <div class="container">
 
+    <?php
+        while($row = mysqli_fetch_row(ShowDataByTable('loginapp','users'))){
+            print_r($row);
+        }//寫個迴圈全部撈出來
+      
+
+    ?>
     <div class="col-sm-6">
         <form action="login.php" method="post">
             <div class="form-group">
