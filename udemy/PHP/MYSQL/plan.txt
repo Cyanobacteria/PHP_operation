@@ -1,0 +1,36 @@
+CRUD展示
+
+作者 標題 內容 
+
+db_set.php 負責資料庫基本事務
+
+functions.php 放function
+
+創造
+
+讀取 顯示全部
+
+更新 根據ID
+
+刪除 根據ID
+
+
+
+
+
+目前進度:完成CRUD單一功能的function
+
+並把 連接資料庫 與 存入資料庫 都分割開來寫成function
+
+
+
+
+
+
+
+
+
+
+
+
+
